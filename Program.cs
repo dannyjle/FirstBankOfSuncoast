@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FirstBankOfSuncoast
 {
@@ -19,6 +20,11 @@ namespace FirstBankOfSuncoast
         public int Amount { get; set; }
         public DateTime DateAdded { get; set; } = DateTime.Now;
 
+        public int ComputeAmount()
+        {
+            var startAmount = 0 + Amount;
+            return startAmount;
+        }
 
 
     }
@@ -112,7 +118,15 @@ namespace FirstBankOfSuncoast
                         Console.WriteLine($"The deposit amount of -${transaction.Amount}- will be added to your Account!");
                         Console.WriteLine();
 
+
                         allTransaction.Add(transaction);
+
+                        foreach (var x in allTransaction)
+                        {
+                            Console.WriteLine(x.Amount);
+                        }
+
+
                     }
 
                     else if (choice == "C")
@@ -131,7 +145,7 @@ namespace FirstBankOfSuncoast
                     }
                 }
 
-                //IF DEPOSIT 
+                //IF WITHDRAW 
                 else if (answer == "W")
                 {
                     var transaction = new Transaction();
@@ -141,62 +155,109 @@ namespace FirstBankOfSuncoast
                     var choice = Console.ReadLine().ToUpper();
                     Console.WriteLine();
 
+
+
                     if (choice == "S")
                     {
+
                         transaction.Amount = PromptForInteger("How much money did you want withdraw from your Saving accout? ");
-                        transaction.TransactionType = "Deposit";
+                        transaction.TransactionType = "Withdraw";
                         transaction.AccountType = "Saving";
                         transaction.DateAdded = DateTime.Now;
 
                         Console.WriteLine();
-                        Console.WriteLine($"The deposit amount of -${transaction.Amount}- will be added to your Account!");
+                        Console.WriteLine($"The amount of -${transaction.Amount}- has been taken be added to your Account!");
+                        Console.WriteLine();
+
+
+                        var savingWithdraw = allTransaction.Where(withdraw => withdraw.AccountType == "Saving").Where(withdraw => withdraw.TransactionType == "Deposit").Sum(withdraw => transaction.Amount - withdraw.Amount);
+
+                        Console.WriteLine();
+                        Console.WriteLine($"The amount of -${savingWithdraw}- remains in your Account!");
                         Console.WriteLine();
 
                         allTransaction.Add(transaction);
 
+                        foreach (var x in allTransaction)
+                        {
+                            Console.WriteLine(x.Amount);
+                        }
+
                     }
+
 
                     else if (choice == "C")
                     {
-                        transaction.Amount = PromptForInteger("How much money did you want to withdraw from your Checking account? ");
-                        transaction.TransactionType = "Deposit";
-                        transaction.AccountType = "Checking";
+                        transaction.Amount = PromptForInteger("How much money did you want withdraw from your Saving accout? ");
+                        transaction.TransactionType = "Withdraw";
+                        transaction.AccountType = "Saving";
                         transaction.DateAdded = DateTime.Now;
 
+                        Console.WriteLine();
+                        Console.WriteLine($"The amount of -${transaction.Amount}- has been taken be added to your Account!");
+                        Console.WriteLine();
+
+
+                        var checkingWithdraw = allTransaction.Where(withdraw => withdraw.AccountType == "Checking").Where(withdraw => withdraw.TransactionType == "Deposit").Sum(withdraw => transaction.Amount - withdraw.Amount);
 
                         Console.WriteLine();
-                        Console.WriteLine($"The deposit amount of -${transaction.Amount}- will be added to your Account!");
+                        Console.WriteLine($"The amount of -${checkingWithdraw}- remains in your Account!");
                         Console.WriteLine();
 
                         allTransaction.Add(transaction);
 
+                    }
+                }
+
+
+
+
+
+                // IF Balance 
+                else if (answer == "B")
+                {
+
+                    Console.WriteLine();
+                    Console.Write("Which do you want to view, the [S]aving Account or [C]hecking Account? ");
+                    var accountChoice = Console.ReadLine().ToUpper();
+                    Console.WriteLine();
+
+                    if (accountChoice == "S")
+                    {
+                        var foundDeposits = allTransaction.Where(s => s.TransactionType == "Deposit").Sum(s => s.Amount);
+                        var foundWithdraw = allTransaction.Where(s => s.TransactionType == "Withdraw").Sum(s => s.Amount);
+
+                        Console.WriteLine($"You have {foundDeposits - foundWithdraw} in Savings");
 
                     }
-                    //IF Balance 
-                    // else if (answer == "B")
-                    // { 
 
-                    // }
+                    else if (accountChoice == "C")
+                    {
 
-                    //IF Transaction 
-                    // else if (answer == "T")
-                    // { 
+                        var foundDeposits = allTransaction.Where(s => s.TransactionType == "Deposit").Sum(s => s.Amount);
+                        var foundWithdraw = allTransaction.Where(s => s.TransactionType == "Withdraw").Sum(s => s.Amount);
 
-                    // }
+                        Console.WriteLine($"You have {foundDeposits - foundWithdraw} in Savings");
 
 
+                    }
 
                 }
+
+                //IF Transaction 
+                // else if (answer == "T")
+                // { 
+
+                // }
+
+
 
 
                 //IF Quit 
                 else if (answer == "Q")
                 {
-
                     whileRunning = false;
                     Console.WriteLine("THANKS FOR BANKING WITH SDG.... GOODBYE :)");
-
-
                 }
             }
         }
