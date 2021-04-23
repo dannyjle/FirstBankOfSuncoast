@@ -17,7 +17,7 @@ namespace FirstBankOfSuncoast
         public string AccountType { get; set; }
         public string TransactionType { get; set; }
         public int Amount { get; set; }
-        public DateTime WhenChanged { get; set; } = DateTime.Now;
+        public DateTime DateAdded { get; set; } = DateTime.Now;
 
 
 
@@ -68,8 +68,11 @@ namespace FirstBankOfSuncoast
 
             //Next we are going to create a list for storing transactions so that we can store information of the account user within the methods.
 
-            var newTransaction = new List<Transaction>();
+            var allTransaction = new List<Transaction>();
 
+
+            // var allCheckingTransactions = Transaction.Where
+            //var allCheckingDeposit = allCheckingTransactions.Where
 
 
             // Then we are going to create a boolean statement to run a “While” loop for our program.
@@ -90,8 +93,8 @@ namespace FirstBankOfSuncoast
                 //IF DEPOSIT 
                 if (answer == "D")
                 {
-                    var depositSaving = new Transaction();
-                    var depositChecking = new Transaction();
+                    var transaction = new Transaction();
+
 
                     Console.WriteLine();
                     Console.Write("What do you want to do? Deposit in your [S]aving Account or [C]hecking Account? ");
@@ -100,40 +103,102 @@ namespace FirstBankOfSuncoast
 
                     if (choice == "S")
                     {
-                        depositSaving.Amount = PromptForInteger("How much money did you want to deposit into you Saving accout? ");
-                        depositSaving.TransactionType = "Deposit";
-                        depositSaving.AccountType = "Saving";
+                        transaction.Amount = PromptForInteger("How much money did you want to deposit into you Saving accout? ");
+                        transaction.TransactionType = "Deposit";
+                        transaction.AccountType = "Saving";
+                        transaction.DateAdded = DateTime.Now;
 
                         Console.WriteLine();
-                        Console.WriteLine($"The deposit amount of -${depositSaving.Amount}- will be added to your Account!");
+                        Console.WriteLine($"The deposit amount of -${transaction.Amount}- will be added to your Account!");
                         Console.WriteLine();
 
-                        newTransaction.Add(depositSaving);
+                        allTransaction.Add(transaction);
                     }
 
                     else if (choice == "C")
                     {
-                        depositChecking.Amount = PromptForInteger("How much money did you want to deposit into your Checking account? ");
-                        depositChecking.TransactionType = "Deposit";
-                        depositChecking.AccountType = "Checking";
+                        transaction.Amount = PromptForInteger("How much money did you want to deposit into your Checking account? ");
+                        transaction.TransactionType = "Deposit";
+                        transaction.AccountType = "Checking";
+                        transaction.DateAdded = DateTime.Now;
 
 
                         Console.WriteLine();
-                        Console.WriteLine($"The deposit amount of -${depositChecking.Amount}- will be added to your Account!");
+                        Console.WriteLine($"The deposit amount of -${transaction.Amount}- will be added to your Account!");
                         Console.WriteLine();
 
-                        newTransaction.Add(depositChecking);
-
+                        allTransaction.Add(transaction);
                     }
                 }
 
+                //IF DEPOSIT 
+                else if (answer == "W")
+                {
+                    var transaction = new Transaction();
+
+                    Console.WriteLine();
+                    Console.Write("What do you want to do? Withdraw from your [S]aving Account or [C]hecking Account? ");
+                    var choice = Console.ReadLine().ToUpper();
+                    Console.WriteLine();
+
+                    if (choice == "S")
+                    {
+                        transaction.Amount = PromptForInteger("How much money did you want withdraw from your Saving accout? ");
+                        transaction.TransactionType = "Deposit";
+                        transaction.AccountType = "Saving";
+                        transaction.DateAdded = DateTime.Now;
+
+                        Console.WriteLine();
+                        Console.WriteLine($"The deposit amount of -${transaction.Amount}- will be added to your Account!");
+                        Console.WriteLine();
+
+                        allTransaction.Add(transaction);
+
+                    }
+
+                    else if (choice == "C")
+                    {
+                        transaction.Amount = PromptForInteger("How much money did you want to withdraw from your Checking account? ");
+                        transaction.TransactionType = "Deposit";
+                        transaction.AccountType = "Checking";
+                        transaction.DateAdded = DateTime.Now;
+
+
+                        Console.WriteLine();
+                        Console.WriteLine($"The deposit amount of -${transaction.Amount}- will be added to your Account!");
+                        Console.WriteLine();
+
+                        allTransaction.Add(transaction);
+
+
+                    }
+                    //IF Balance 
+                    // else if (answer == "B")
+                    // { 
+
+                    // }
+
+                    //IF Transaction 
+                    // else if (answer == "T")
+                    // { 
+
+                    // }
 
 
 
+                }
 
 
+                //IF Quit 
+                else if (answer == "Q")
+                {
+
+                    whileRunning = false;
+                    Console.WriteLine("THANKS FOR BANKING WITH SDG.... GOODBYE :)");
+
+
+                }
             }
-
         }
     }
 }
