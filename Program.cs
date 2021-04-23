@@ -14,11 +14,12 @@ namespace FirstBankOfSuncoast
         // A Method for WhenChanged
 
 
-        public string Balance { get; set; }
-
-        public int SavingAccount { get; set; }
-        public int CheckingAccount { get; set; }
+        public string AccountType { get; set; }
+        public string TransactionType { get; set; }
+        public int Amount { get; set; }
         public DateTime WhenChanged { get; set; } = DateTime.Now;
+
+
 
     }
 
@@ -80,7 +81,7 @@ namespace FirstBankOfSuncoast
             {
                 //Then we will proceed to make a simple menu screen where the under can select to [B]alance, make a [D]eposit, make [W]ithdraw, Access [T]ransaction, or [Q]uit. (make readline.ToUpper();)
                 Console.WriteLine();
-                Console.Write("What do you want to do? [D]eposit, [W]ithdrawl, [T]ransaction, [B]alance, or [Q]uit ? ");
+                Console.Write("What do you want to do? [D]eposit, [W]ithdrawl, [B]alance, [T]ransaction History, or [Q]uit ? ");
                 var answer = Console.ReadLine().ToUpper();
                 Console.WriteLine();
 
@@ -89,7 +90,9 @@ namespace FirstBankOfSuncoast
                 //IF DEPOSIT 
                 if (answer == "D")
                 {
-                    var transaction = new Transaction();
+                    var depositSaving = new Transaction();
+                    var depositChecking = new Transaction();
+
                     Console.WriteLine();
                     Console.Write("What do you want to do? Deposit in your [S]aving Account or [C]hecking Account? ");
                     var choice = Console.ReadLine().ToUpper();
@@ -97,23 +100,30 @@ namespace FirstBankOfSuncoast
 
                     if (choice == "S")
                     {
-                        transaction.SavingAccount = PromptForInteger("How much money did you want to deposit into you Saving accout? ");
+                        depositSaving.Amount = PromptForInteger("How much money did you want to deposit into you Saving accout? ");
+                        depositSaving.TransactionType = "Deposit";
+                        depositSaving.AccountType = "Saving";
 
                         Console.WriteLine();
-                        Console.WriteLine($"The deposit amount of -${transaction.SavingAccount}- will be added to your Account!");
+                        Console.WriteLine($"The deposit amount of -${depositSaving.Amount}- will be added to your Account!");
                         Console.WriteLine();
 
-                        newTransaction.Add(transaction);
+                        newTransaction.Add(depositSaving);
                     }
-                    else
+
+                    else if (choice == "C")
                     {
-                        transaction.CheckingAccount = PromptForInteger("How much money did you want to deposit into your Checking account? ");
+                        depositChecking.Amount = PromptForInteger("How much money did you want to deposit into your Checking account? ");
+                        depositChecking.TransactionType = "Deposit";
+                        depositChecking.AccountType = "Checking";
+
 
                         Console.WriteLine();
-                        Console.WriteLine($"The deposit amount of -${transaction.CheckingAccount}- will be added to your Account!");
+                        Console.WriteLine($"The deposit amount of -${depositChecking.Amount}- will be added to your Account!");
                         Console.WriteLine();
 
-                        newTransaction.Add(transaction);
+                        newTransaction.Add(depositChecking);
+
                     }
                 }
 
