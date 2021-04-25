@@ -77,11 +77,6 @@ namespace FirstBankOfSuncoast
 
             var allTransaction = new List<Transaction>();
 
-
-            // var allCheckingTransactions = Transaction.Where
-            //var allCheckingDeposit = allCheckingTransactions.Where
-
-
             // Then we are going to create a boolean statement to run a “While” loop for our program.
             var whileRunning = true;
 
@@ -285,9 +280,20 @@ namespace FirstBankOfSuncoast
                 }
 
                 //IF Transaction 
-                // else if (answer == "T")
-                // { 
-                // }
+                else if (answer == "T")
+                {
+                    foreach (var transaction in allTransaction)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine($"{transaction.Amount}");
+                        Console.WriteLine($"{transaction.TransactionType}");
+                        Console.WriteLine($"{transaction.AccountType}");
+                        Console.WriteLine($"{transaction.DateAdded}");
+                        Console.WriteLine();
+                    }
+
+
+                }
 
 
 
