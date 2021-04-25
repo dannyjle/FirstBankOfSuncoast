@@ -27,6 +27,7 @@ namespace FirstBankOfSuncoast
         }
 
 
+
     }
 
     class Program
@@ -109,18 +110,28 @@ namespace FirstBankOfSuncoast
 
                     if (choice == "S")
                     {
+
+
                         transaction.Amount = PromptForInteger("How much money did you want to deposit into you Savings accout? ");
                         transaction.TransactionType = "Deposit";
                         transaction.AccountType = "Saving";
                         transaction.DateAdded = DateTime.Now;
 
-                        Console.WriteLine();
-                        Console.WriteLine($"The deposit amount of -${transaction.Amount}- will be added to your Account!");
-                        Console.WriteLine();
+                        if (transaction.Amount <= 0)
+                        {
+                            Console.WriteLine("Sorry, you Deposit must be greater than zero.");
+                        }
+
+                        else
+                        {
+
+                            Console.WriteLine();
+                            Console.WriteLine($"The deposit amount of -${transaction.Amount}- will be added to your Account!");
+                            Console.WriteLine();
 
 
-                        allTransaction.Add(transaction);
-
+                            allTransaction.Add(transaction);
+                        }
 
                     }
 
@@ -131,12 +142,19 @@ namespace FirstBankOfSuncoast
                         transaction.AccountType = "Checking";
                         transaction.DateAdded = DateTime.Now;
 
+                        if (transaction.Amount <= 0)
+                        {
+                            Console.WriteLine("Sorry, you Deposit must be greater than zero.");
+                        }
 
-                        Console.WriteLine();
-                        Console.WriteLine($"The deposit amount of -${transaction.Amount}- will be added to your Account!");
-                        Console.WriteLine();
+                        else
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"The deposit amount of -${transaction.Amount}- will be added to your Account!");
+                            Console.WriteLine();
 
-                        allTransaction.Add(transaction);
+                            allTransaction.Add(transaction);
+                        }
                     }
                 }
 
@@ -155,49 +173,77 @@ namespace FirstBankOfSuncoast
                     if (choice == "S")
                     {
 
+                        var savingWithdraw = allTransaction.Where(withdraw => withdraw.AccountType == "Saving").Where(withdraw => withdraw.TransactionType == "Deposit").Sum(withdraw => transaction.Amount - withdraw.Amount);
+
                         transaction.Amount = PromptForInteger("How much money did you want withdraw from your Savings Accout? ");
                         transaction.TransactionType = "Withdraw";
                         transaction.AccountType = "Saving";
                         transaction.DateAdded = DateTime.Now;
 
-                        Console.WriteLine();
-                        Console.WriteLine($"The amount of -${transaction.Amount}- has been taken be added to your Account!");
-                        Console.WriteLine();
+                        if (savingWithdraw <= transaction.Amount)
+                        {
+                            var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Saving").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
+                            var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Saving").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
+                            var savingBalance = $"{foundDeposits - foundWithdraw}";
 
+                            Console.WriteLine();
+                            Console.WriteLine($"Sorry, insufficient funds! Your Savings Balance is {savingBalance}");
+                            Console.WriteLine();
+                        }
 
-                        var savingWithdraw = allTransaction.Where(withdraw => withdraw.AccountType == "Saving").Where(withdraw => withdraw.TransactionType == "Deposit").Sum(withdraw => transaction.Amount - withdraw.Amount);
-                        allTransaction.Add(transaction);
+                        else
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"The amount of -${transaction.Amount}- has been taken be added to your Account!");
+                            Console.WriteLine();
 
-                        var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Saving").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
-                        var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Saving").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
-                        var savingBalance = $"{foundDeposits - foundWithdraw}";
+                            allTransaction.Add(transaction);
 
-                        Console.WriteLine($"You have {savingBalance} in your Savings Account");
+                            var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Saving").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
+                            var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Saving").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
+                            var savingBalance = $"{foundDeposits - foundWithdraw}";
 
+                            Console.WriteLine($"You have {savingBalance} in your Savings Account");
+                        }
 
                     }
 
 
                     else if (choice == "C")
                     {
+                        var checkingWithdraw = allTransaction.Where(withdraw => withdraw.AccountType == "Checking").Where(withdraw => withdraw.TransactionType == "Deposit").Sum(withdraw => transaction.Amount - withdraw.Amount);
+
                         transaction.Amount = PromptForInteger("How much money did you want withdraw from your Savings accout? ");
                         transaction.TransactionType = "Withdraw";
                         transaction.AccountType = "Saving";
                         transaction.DateAdded = DateTime.Now;
 
-                        Console.WriteLine();
-                        Console.WriteLine($"The amount of -${transaction.Amount}- has been taken be added to your Account!");
-                        Console.WriteLine();
+                        if (checkingWithdraw <= transaction.Amount)
+                        {
+                            var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Checking").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
+                            var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Checking").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
+                            var checkingBalance = $"{foundDeposits - foundWithdraw}";
+
+                            Console.WriteLine();
+                            Console.WriteLine($"Sorry, insufficient funds! Your Checkings Balance is {checkingBalance}");
+                            Console.WriteLine();
+                        }
+
+                        else
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"The amount of -${transaction.Amount}- has been taken be added to your Account!");
+                            Console.WriteLine();
 
 
-                        var checkingWithdraw = allTransaction.Where(withdraw => withdraw.AccountType == "Checking").Where(withdraw => withdraw.TransactionType == "Deposit").Sum(withdraw => transaction.Amount - withdraw.Amount);
-                        allTransaction.Add(transaction);
+                            allTransaction.Add(transaction);
 
-                        var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Checking").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
-                        var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Checking").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
-                        var checkingBalance = $"{foundDeposits - foundWithdraw}";
+                            var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Checking").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
+                            var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Checking").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
+                            var checkingBalance = $"{foundDeposits - foundWithdraw}";
 
-                        Console.WriteLine($"You have {checkingBalance} in your Checkings Account");
+                            Console.WriteLine($"You have {checkingBalance} in your Checkings Account");
+                        }
 
                     }
                 }
@@ -241,7 +287,6 @@ namespace FirstBankOfSuncoast
                 //IF Transaction 
                 // else if (answer == "T")
                 // { 
-
                 // }
 
 
