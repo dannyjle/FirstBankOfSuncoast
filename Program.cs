@@ -180,7 +180,7 @@ namespace FirstBankOfSuncoast
                         transaction.AccountType = "Saving";
                         transaction.DateAdded = DateTime.Now;
 
-                        if (savingWithdraw <= transaction.Amount)
+                        if (savingWithdraw > transaction.Amount)
                         {
                             var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Saving").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
                             var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Saving").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
@@ -218,7 +218,7 @@ namespace FirstBankOfSuncoast
                         transaction.AccountType = "Saving";
                         transaction.DateAdded = DateTime.Now;
 
-                        if (checkingWithdraw <= transaction.Amount)
+                        if (checkingWithdraw < transaction.Amount)
                         {
                             var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Checking").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
                             var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Checking").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
