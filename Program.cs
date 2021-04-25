@@ -168,8 +168,8 @@ namespace FirstBankOfSuncoast
                         var savingWithdraw = allTransaction.Where(withdraw => withdraw.AccountType == "Saving").Where(withdraw => withdraw.TransactionType == "Deposit").Sum(withdraw => transaction.Amount - withdraw.Amount);
                         allTransaction.Add(transaction);
 
-                        var foundDeposits = allTransaction.Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
-                        var foundWithdraw = allTransaction.Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
+                        var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Saving").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
+                        var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Saving").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
                         var savingBalance = $"{foundDeposits - foundWithdraw}";
 
                         Console.WriteLine($"You have {savingBalance} in your Savings Account");
@@ -193,8 +193,8 @@ namespace FirstBankOfSuncoast
                         var checkingWithdraw = allTransaction.Where(withdraw => withdraw.AccountType == "Checking").Where(withdraw => withdraw.TransactionType == "Deposit").Sum(withdraw => transaction.Amount - withdraw.Amount);
                         allTransaction.Add(transaction);
 
-                        var foundDeposits = allTransaction.Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
-                        var foundWithdraw = allTransaction.Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
+                        var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Checking").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
+                        var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Checking").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
                         var checkingBalance = $"{foundDeposits - foundWithdraw}";
 
                         Console.WriteLine($"You have {checkingBalance} in your Checkings Account");
@@ -217,8 +217,8 @@ namespace FirstBankOfSuncoast
 
                     if (accountChoice == "S")
                     {
-                        var foundDeposits = allTransaction.Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
-                        var foundWithdraw = allTransaction.Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
+                        var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Saving").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
+                        var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Saving").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
                         var savingBalance = $"{foundDeposits - foundWithdraw}";
 
                         Console.WriteLine($"You have {savingBalance} in your Savings Account");
@@ -228,8 +228,8 @@ namespace FirstBankOfSuncoast
                     else if (accountChoice == "C")
                     {
 
-                        var foundDeposits = allTransaction.Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
-                        var foundWithdraw = allTransaction.Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
+                        var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Checking").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
+                        var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Checking").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
                         var checkingBalance = $"{foundDeposits - foundWithdraw}";
 
                         Console.WriteLine($"You have {checkingBalance} in your Checkings Account");
