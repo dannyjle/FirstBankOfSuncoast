@@ -298,16 +298,43 @@ namespace FirstBankOfSuncoast
                 //IF Transaction 
                 else if (answer == "T")
                 {
-                    foreach (var transaction in allTransaction)
+                    Console.WriteLine();
+                    Console.Write("Which do you want to view, the [S]avings Account or [C]heckings Account? ");
+                    var accountChoice = Console.ReadLine().ToUpper();
+                    Console.WriteLine();
+
+
+                    if (accountChoice == "S")
                     {
-                        Console.WriteLine();
-                        Console.WriteLine($"{transaction.Amount}");
-                        Console.WriteLine($"{transaction.TransactionType}");
-                        Console.WriteLine($"{transaction.AccountType}");
-                        Console.WriteLine($"{transaction.DateAdded}");
-                        Console.WriteLine();
+                        var foundTransactions = allTransaction.Where(transaction => transaction.AccountType == "Saving");
+
+                        foreach (var transaction in foundTransactions)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"{transaction.Amount}");
+                            Console.WriteLine($"{transaction.TransactionType}");
+                            Console.WriteLine($"{transaction.AccountType}");
+                            Console.WriteLine($"{transaction.DateAdded}");
+                            Console.WriteLine();
+                        }
+
+
                     }
 
+                    else if (accountChoice == "C")
+                    {
+                        var foundTransactions = allTransaction.Where(transaction => transaction.AccountType == "Checking");
+
+                        foreach (var transaction in foundTransactions)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine($"{transaction.Amount}");
+                            Console.WriteLine($"{transaction.TransactionType}");
+                            Console.WriteLine($"{transaction.AccountType}");
+                            Console.WriteLine($"{transaction.DateAdded}");
+                            Console.WriteLine();
+                        }
+                    }
 
                 }
 
