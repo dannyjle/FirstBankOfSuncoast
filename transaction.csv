@@ -1,0 +1,5 @@
+AccountType,TransactionType,Amount,DateAdded
+Saving,Deposit,5000,04/25/2021 20:33:31
+Checking,Deposit,1000,04/25/2021 20:33:37
+Saving,Withdraw,500,04/25/2021 20:34:01
+Checking,Deposit,50,04/25/2021 20:34:11
