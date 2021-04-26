@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace FirstBankOfSuncoast
 {
@@ -83,9 +84,13 @@ namespace FirstBankOfSuncoast
             if (File.Exists("transation.csv"))
             {
                 var fileReader = new StreamReader("transation.csv");
-                var csvReader = new CsvReader(fileReader, CultureInfo.InvariantCulture);
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    HasHeaderRecord = true,
+                };
+                var csvReader = new CsvReader(fileReader, config);
+
                 allTransaction = csvReader.GetRecords<Transaction>().ToList();
-                fileReader.Close();
             }
 
             // Then we are going to create a boolean statement to run a “While” loop for our program.
@@ -179,14 +184,14 @@ namespace FirstBankOfSuncoast
                     if (choice == "S")
                     {
 
-                        var savingWithdraw = allTransaction.Where(withdraw => withdraw.AccountType == "Saving").Where(withdraw => withdraw.TransactionType == "Deposit").Sum(withdraw => transaction.Amount - withdraw.Amount);
+                        var savingWithdraw = allTransaction.Where(withdraw => withdraw.AccountType == "Saving").Sum(withdraw => transaction.Amount - withdraw.Amount);
 
                         transaction.Amount = PromptForInteger("How much money did you want withdraw from your Savings Accout? ");
                         transaction.TransactionType = "Withdraw";
                         transaction.AccountType = "Saving";
                         transaction.DateAdded = DateTime.Now;
 
-                        if (savingWithdraw > transaction.Amount)
+                        if (savingWithdraw >= 0)
                         {
                             var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Saving").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
                             var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Saving").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
@@ -217,14 +222,14 @@ namespace FirstBankOfSuncoast
 
                     else if (choice == "C")
                     {
-                        var checkingWithdraw = allTransaction.Where(withdraw => withdraw.AccountType == "Checking").Where(withdraw => withdraw.TransactionType == "Deposit").Sum(withdraw => transaction.Amount - withdraw.Amount);
+                        var checkingWithdraw = allTransaction.Where(withdraw => withdraw.AccountType == "Checking").Sum(withdraw => transaction.Amount - withdraw.Amount);
 
                         transaction.Amount = PromptForInteger("How much money did you want withdraw from your Savings accout? ");
                         transaction.TransactionType = "Withdraw";
                         transaction.AccountType = "Saving";
                         transaction.DateAdded = DateTime.Now;
 
-                        if (checkingWithdraw < transaction.Amount)
+                        if (checkingWithdraw >= 0)
                         {
                             var foundDeposits = allTransaction.Where(fd => fd.AccountType == "Checking").Where(fd => fd.TransactionType == "Deposit").Sum(fd => fd.Amount);
                             var foundWithdraw = allTransaction.Where(fw => fw.AccountType == "Checking").Where(fw => fw.TransactionType == "Withdraw").Sum(fw => fw.Amount);
