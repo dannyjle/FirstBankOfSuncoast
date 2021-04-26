@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using CsvHelper;
 
 namespace FirstBankOfSuncoast
 {
@@ -63,6 +66,7 @@ namespace FirstBankOfSuncoast
         static void Main(string[] args)
         {
 
+
             //First we’re creating a greeting/ welcome for “SDG Bank Monies Manager” 
 
             Console.WriteLine();
@@ -72,10 +76,17 @@ namespace FirstBankOfSuncoast
             Console.WriteLine();
 
 
-
             //Next we are going to create a list for storing transactions so that we can store information of the account user within the methods.
 
             var allTransaction = new List<Transaction>();
+
+            if (File.Exists("transation.csv"))
+            {
+                var fileReader = new StreamReader("transation.csv");
+                var csvReader = new CsvReader(fileReader, CultureInfo.InvariantCulture);
+                allTransaction = csvReader.GetRecords<Transaction>().ToList();
+                fileReader.Close();
+            }
 
             // Then we are going to create a boolean statement to run a “While” loop for our program.
             var whileRunning = true;
@@ -92,7 +103,7 @@ namespace FirstBankOfSuncoast
 
 
 
-                //IF DEPOSIT 
+                //IF DEPOSIT r
                 if (answer == "D")
                 {
                     var transaction = new Transaction();
@@ -305,6 +316,15 @@ namespace FirstBankOfSuncoast
                     Console.WriteLine("THANKS FOR BANKING WITH SDG.... GOODBYE :)");
                 }
             }
+
+            var fileWriter = new StreamWriter("transaction.csv");
+
+            var csvWriter = new CsvWriter(fileWriter, CultureInfo.InvariantCulture);
+
+            csvWriter.WriteRecords(allTransaction);
+
+            fileWriter.Close();
+
         }
     }
 }
